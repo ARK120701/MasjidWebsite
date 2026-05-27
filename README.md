@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# MasjidFinder USA
 
-## Getting Started
+Find masjids across all 50 states, view prayer times, and locate Islamic centers near you.
 
-First, run the development server:
+## Features
+
+- 135+ masjids across every US state, organized by state and city
+- Live salah times (Fajr → Isha) calculated per location via the Aladhan API
+- "Near Me" with GPS + radius filter and interactive map
+- Prayer times calculator for any US city
+- Per-masjid detail pages with map embed and nearby masjids
+- Fully static-generated — fast, no database needed
+
+## Deploy to Vercel (one click)
+
+1. Push this repo to GitHub (if not already there)
+2. Go to [vercel.com](https://vercel.com) → **Add New Project**
+3. Import your GitHub repository
+4. Leave all settings as defaults — Vercel auto-detects Next.js
+5. Click **Deploy**
+
+Your site will be live at `your-project.vercel.app` in ~60 seconds.
+
+### Adding a custom domain later
+
+In the Vercel dashboard → your project → **Settings → Domains** → add your domain and follow the DNS instructions.
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Next.js 16** (App Router, static generation)
+- **Tailwind CSS**
+- **Leaflet** (OpenStreetMap) for maps
+- **Aladhan API** — free, no key required, proxied through `/api/` routes
+- **Lucide React** for icons

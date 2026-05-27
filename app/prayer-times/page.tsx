@@ -8,15 +8,6 @@ import type { PrayerTimes } from "@/lib/prayerTimes";
 
 const PRAYERS = ["Fajr", "Sunrise", "Dhuhr", "Asr", "Maghrib", "Isha"] as const;
 
-function formatTime(raw: string): string {
-  const [hStr, mStr] = raw.split(":");
-  let h = parseInt(hStr, 10);
-  const period = h >= 12 ? "PM" : "AM";
-  if (h === 0) h = 12;
-  else if (h > 12) h -= 12;
-  return `${h}:${mStr} ${period}`;
-}
-
 function getNextPrayer(times: PrayerTimes): string {
   const now = new Date();
   const nowMin = now.getHours() * 60 + now.getMinutes();
@@ -50,19 +41,12 @@ export default function PrayerTimesPage() {
     setSearched(true);
     try {
       const res = await fetch(
-        `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=US&state=${encodeURIComponent(stateCode)}&method=${method}`
+        `/api/prayer-times-by-city?city=${encodeURIComponent(city)}&state=${encodeURIComponent(stateCode)}&method=${method}`
       );
-      const json = await res.json();
-      if (json.code !== 200) throw new Error("Not found");
-      const t = json.data.timings;
-      setTimes({
-        Fajr: formatTime(t.Fajr),
-        Sunrise: formatTime(t.Sunrise),
-        Dhuhr: formatTime(t.Dhuhr),
-        Asr: formatTime(t.Asr),
-        Maghrib: formatTime(t.Maghrib),
-        Isha: formatTime(t.Isha),
-      });
+      if (!res.ok) throw new Error("Not found");
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      setTimes(data);
     } catch {
       setError("Prayer times could not be found for that location. Try a different city.");
     } finally {

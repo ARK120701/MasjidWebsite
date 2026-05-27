@@ -37,30 +37,9 @@ export default function PrayerTimesCard({ lat, lng }: Props) {
   useEffect(() => {
     async function load() {
       try {
-        const ts = Math.floor(Date.now() / 1000);
-        const res = await fetch(
-          `https://api.aladhan.com/v1/timings/${ts}?latitude=${lat}&longitude=${lng}&method=2`
-        );
-        const json = await res.json();
-        const t = json.data.timings;
-
-        const fmt = (raw: string) => {
-          const [hStr, mStr] = raw.split(":");
-          let h = parseInt(hStr, 10);
-          const period = h >= 12 ? "PM" : "AM";
-          if (h === 0) h = 12;
-          else if (h > 12) h -= 12;
-          return `${h}:${mStr} ${period}`;
-        };
-
-        const parsed: PrayerTimes = {
-          Fajr: fmt(t.Fajr),
-          Sunrise: fmt(t.Sunrise),
-          Dhuhr: fmt(t.Dhuhr),
-          Asr: fmt(t.Asr),
-          Maghrib: fmt(t.Maghrib),
-          Isha: fmt(t.Isha),
-        };
+        const res = await fetch(`/api/prayer-times?lat=${lat}&lng=${lng}`);
+        if (!res.ok) throw new Error("API error");
+        const parsed: PrayerTimes = await res.json();
 
         setTimes(parsed);
         setNextPrayer(getNextPrayer(parsed));
